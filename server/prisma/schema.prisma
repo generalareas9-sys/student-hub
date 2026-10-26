@@ -1,0 +1,182 @@
+// Prisma Schema for Student Hub
+// For local development on machines without PostgreSQL installed, SQLite allows immediate zero-config persistence.
+// For production deployment (Render, Neon, Supabase, Railway), set provider = "postgresql".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  role         String    @default("STUDENT") // STUDENT, INSTRUCTOR, ADMIN
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  profile          Profile?
+  enrollments      Enrollment[]
+  submissions      Submission[]
+  grades           Grade[]
+  studySessions    StudySession[]
+  events           CalendarEvent[]
+  notifications    Notification[]
+  sentMessages     Message[]       @relation("SentMessages")
+  receivedMessages Message[]       @relation("ReceivedMessages")
+  auditLogs        AuditLog[]
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName    String
+  studentId   String?  @unique
+  avatarUrl   String?
+  major       String?  @default("Computer Science")
+  bio         String?
+  phone       String?
+  address     String?
+  yearOfStudy String?  @default("Sophomore")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Course {
+  id              String   @id @default(uuid())
+  code            String   @unique // e.g. "CS101", "MATH201"
+  title           String
+  description     String?
+  instructorName  String
+  credits         Int      @default(3)
+  progressPercent Int      @default(0)
+  color           String   @default("#5048e5")
+  semester        String   @default("Fall 2026")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  enrollments   Enrollment[]
+  assignments   Assignment[]
+  grades        Grade[]
+  studySessions StudySession[]
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId   String
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  enrolledAt DateTime @default(now())
+  status     String   @default("ACTIVE") // ACTIVE, COMPLETED, DROPPED
+
+  @@unique([userId, courseId])
+}
+
+model Assignment {
+  id          String    @id @default(uuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  dueDate     DateTime
+  maxScore    Float     @default(100.0)
+  weight      Float     @default(15.0)
+  status      String    @default("NOT_STARTED") // NOT_STARTED, IN_PROGRESS, SUBMITTED, GRADED
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  submissions Submission[]
+  grades      Grade[]
+}
+
+model Submission {
+  id           String     @id @default(uuid())
+  assignmentId String
+  assignment   Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  submittedAt  DateTime   @default(now())
+  content      String?
+  fileUrl      String?
+  status       String     @default("SUBMITTED")
+}
+
+model Grade {
+  id           String      @id @default(uuid())
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId     String
+  course       Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  assignmentId String?
+  assignment   Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+  score        Float
+  maxScore     Float       @default(100.0)
+  letterGrade  String      @default("A")
+  feedback     String?
+  gradedAt     DateTime    @default(now())
+}
+
+model StudySession {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId        String?
+  course          Course?  @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  durationMinutes Int
+  sessionDate     DateTime @default(now())
+  notes           String?
+}
+
+model CalendarEvent {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  eventType String   @default("CLASS") // CLASS, EXAM, ASSIGNMENT, MEETUP, DEADLINE
+  startTime DateTime
+  endTime   DateTime
+  color     String   @default("#5048e5")
+  location  String?
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO, WARNING, SUCCESS, ALERT
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
