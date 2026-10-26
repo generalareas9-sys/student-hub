@@ -12,14 +12,13 @@ export default function StatCard({ type, label, value, icon, bgClass }) {
   const IconComponent = iconMap[icon] || BookOpen;
 
   return (
-    <div className={`stat-card stat-card--${bgClass}`}>
-      <div className="stat-icon-wrap" aria-hidden="true">
-        <IconComponent size={20} className="stat-icon" />
+    <article className={`stat-card stat-card--${bgClass}`}>
+      <div className={`stat-badge stat-badge--${bgClass}`} aria-hidden="true">
+        <IconComponent size={18} />
       </div>
-      <div className="stat-content">
-        <span className="stat-label">{label}</span>
-        <h3 className="stat-value">{value}</h3>
-      </div>
-    </div>
+      <p className="stat-label">{label}</p>
+      <h3 className="stat-number">{value}</h3>
+      <span className={`stat-bar stat-bar--${bgClass}`} aria-hidden="true" />
+    </article>
   );
 }
