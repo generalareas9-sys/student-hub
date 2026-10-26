@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Edit2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Pencil } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
@@ -18,23 +18,8 @@ export default function RightPanel() {
 
   // 6-day sliding window calendar logic
   const [calendarOffset, setCalendarOffset] = useState(0);
-  const [events, setEvents] = useState([]);
 
-  useEffect(() => {
-    async function loadEvents() {
-      try {
-        const res = await api.getEvents();
-        if (res.success) {
-          setEvents(res.data);
-        }
-      } catch (err) {
-        // Fallback demo events
-      }
-    }
-    loadEvents();
-  }, []);
-
-  // Compute 6-day chips based on today + calendarOffset
+  // Compute 6-day chips: window = 3 days before today through 2 days after, shifted by offset * 6
   const today = new Date();
   const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 3 + calendarOffset * 6);
 
@@ -62,75 +47,83 @@ export default function RightPanel() {
   const currentYear = baseDate.getFullYear();
 
   return (
-    <aside className="right-panel" aria-label="Student profile and schedule">
-      {/* Student Profile Card */}
-      <section className="profile-card" aria-label="Student profile">
-        <div className="profile-avatar-wrap">
-          <img src={avatarUrl} alt={fullName} className="profile-avatar" />
+    <aside className="right-col" id="rightCol" aria-label="Profile and events">
+      {/* 2. Profile Section */}
+      <div className="profile-section">
+        <div className="profile-header">
+          <h3 className="profile-heading">Profile</h3>
           <button
             type="button"
-            className="profile-edit-btn"
-            title="Edit profile"
+            className="icon-btn"
+            id="btnEditProfile"
+            aria-label="Edit profile"
             onClick={() => navigate('/profile')}
           >
-            <Edit2 size={13} color="#ffffff" />
+            <Pencil size={15} aria-hidden="true" />
           </button>
         </div>
-        <h3 className="profile-name">{fullName}</h3>
-        <p className="profile-dept">{major}</p>
-        <span className="profile-id">{studentId}</span>
-      </section>
 
-      {/* Calendar Strip */}
-      <section className="calendar-card" aria-label="Calendar">
-        <div className="calendar-header">
-          <span className="cal-month">
-            {currentMonthName} {currentYear}
-          </span>
-          <div className="cal-controls">
-            <button
-              type="button"
-              className="cal-arrow"
-              onClick={() => setCalendarOffset((prev) => prev - 1)}
-              aria-label="Previous days"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              type="button"
-              className="cal-arrow"
-              onClick={() => setCalendarOffset((prev) => prev + 1)}
-              aria-label="Next days"
-            >
-              <ChevronRight size={16} />
-            </button>
+        <div className="profile-avatar-wrap">
+          <div className="avatar-ring">
+            <img src={avatarUrl} alt={fullName} className="avatar-img" id="avatarImg" />
           </div>
+          <h4 className="profile-name" id="profileName">{fullName}</h4>
+          <p className="profile-caption" style={{ fontSize: '12px', color: 'var(--muted)', margin: '2px 0' }}>
+            {major}
+          </p>
+          <span style={{ fontSize: '12px', color: 'var(--muted)', display: 'block' }}>
+            {studentId}
+          </span>
+        </div>
+      </div>
+
+      {/* 3. Calendar Strip */}
+      <div className="calendar-card">
+        <div className="calendar-header">
+          <button
+            type="button"
+            className="cal-arrow"
+            id="calPrev"
+            aria-label="Previous days"
+            onClick={() => setCalendarOffset((prev) => prev - 1)}
+          >
+            <ChevronLeft size={16} aria-hidden="true" />
+          </button>
+          <h4 className="cal-month" id="calMonth">
+            {currentMonthName} {currentYear}
+          </h4>
+          <button
+            type="button"
+            className="cal-arrow"
+            id="calNext"
+            aria-label="Next days"
+            onClick={() => setCalendarOffset((prev) => prev + 1)}
+          >
+            <ChevronRight size={16} aria-hidden="true" />
+          </button>
         </div>
 
-        <div className="cal-days" role="tablist">
+        <div className="cal-days" id="calDays" role="tablist">
           {days.map((item, index) => (
             <div
               key={index}
-              className={`cal-day ${item.isToday ? 'active' : ''}`}
+              className={`day-chip ${item.isToday ? 'day-chip--today' : ''}`}
               role="tab"
               aria-selected={item.isToday}
               tabIndex={0}
             >
-              <span className="day-name">{item.dayName}</span>
-              <span className="day-num">{item.date}</span>
+              <span className="day-chip-label">{item.dayName}</span>
+              <span className="day-chip-date">{item.date}</span>
             </div>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* Upcoming Events Section */}
-      <section className="events-card" aria-label="Upcoming events">
-        <div className="events-header">
-          <h4 className="events-title">Upcoming Events</h4>
-          <span className="events-sub">Today</span>
-        </div>
-
-        <div className="events-timeline">
+      {/* 6. Upcoming Events Timeline */}
+      <div className="events-section">
+        <h3 className="events-heading">Upcoming Events</h3>
+        <div className="events-grid">
+          {/* Time header */}
           <div className="events-times" aria-hidden="true">
             <span>9:30</span>
             <span>10:00</span>
@@ -143,37 +136,85 @@ export default function RightPanel() {
             <span>13:30</span>
           </div>
 
-          <div className="events-tracks">
-            <div className="event-track">
-              <span
-                className="event-pill event-pill--orange"
-                style={{ '--col': 2, '--span': 3 }}
-                title="Team Meetup (10:00 - 11:30)"
-              >
-                Team Meetup
-              </span>
+          {/* Day rows with event pills */}
+          <div className="events-body">
+            <div className="event-row">
+              <span className="event-day">Sun</span>
+              <div className="event-track">
+                <span
+                  className="event-pill event-pill--orange"
+                  style={{ '--col': 2, '--span': 3 }}
+                  title="Team Meetup"
+                >
+                  Team Meetup
+                </span>
+              </div>
             </div>
-            <div className="event-track">
-              <span
-                className="event-pill event-pill--purple"
-                style={{ '--col': 4, '--span': 3 }}
-                title="HCI Lecture: User Research (11:00 - 12:30)"
-              >
-                HCI Lecture
-              </span>
+
+            <div className="event-row">
+              <span className="event-day">Mon</span>
+              <div className="event-track"></div>
             </div>
-            <div className="event-track">
-              <span
-                className="event-pill event-pill--mint"
-                style={{ '--col': 6, '--span': 3 }}
-                title="Algorithm Lab (12:00 - 13:30)"
-              >
-                Algorithm Lab
-              </span>
+
+            <div className="event-row">
+              <span className="event-day">Tue</span>
+              <div className="event-track">
+                <span
+                  className="event-pill event-pill--dark"
+                  style={{ '--col': 6, '--span': 3 }}
+                  title="Illustration"
+                >
+                  Illustration
+                </span>
+              </div>
+            </div>
+
+            <div className="event-row">
+              <span className="event-day">Wed</span>
+              <div className="event-track">
+                <span
+                  className="event-pill event-pill--blue"
+                  style={{ '--col': 4, '--span': 3 }}
+                  title="Research"
+                >
+                  Research
+                </span>
+              </div>
+            </div>
+
+            <div className="event-row">
+              <span className="event-day">Thu</span>
+              <div className="event-track">
+                <span
+                  className="event-pill event-pill--coral"
+                  style={{ '--col': 7, '--span': 3 }}
+                  title="Presentation"
+                >
+                  Presentation
+                </span>
+              </div>
+            </div>
+
+            <div className="event-row">
+              <span className="event-day">Fri</span>
+              <div className="event-track"></div>
+            </div>
+
+            <div className="event-row">
+              <span className="event-day">Sat</span>
+              <div className="event-track">
+                <span
+                  className="event-pill event-pill--green"
+                  style={{ '--col': 3, '--span': 3 }}
+                  title="Review Session"
+                >
+                  Review Session
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </aside>
   );
 }
