@@ -47,6 +47,9 @@ export default function DashboardPage() {
       searchValue={searchTerm}
       onSearch={(val) => setSearchTerm(val)}
     >
+      {/* Overview heading */}
+      <h2 className="section-heading">Overview</h2>
+
       {/* 4 Overview Statistics Cards */}
       <section className="stat-cards" aria-label="Academic overview statistics">
         <StatCard
