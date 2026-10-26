@@ -43,8 +43,8 @@ export default function Header({ onMenuClick, onSearch, searchValue }) {
   };
 
   return (
-    <header className="header" role="banner">
-      <div className="header-left">
+    <div className="main-topbar" role="banner">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <button
           type="button"
           className="menu-toggle"
@@ -55,36 +55,36 @@ export default function Header({ onMenuClick, onSearch, searchValue }) {
           <Menu size={20} />
         </button>
         <div className="greeting">
-          <h1 className="greeting-title">
+          <h1>
             Hello {firstName} <span aria-hidden="true">👋</span>
           </h1>
           <p className="greeting-sub">Let's learn something new today!</p>
         </div>
       </div>
 
-      <div className="header-right">
+      <div className="topbar-actions">
         <div className="search-box">
-          <Search size={18} className="search-icon" aria-hidden="true" />
+          <Search size={16} className="search-icon" aria-hidden="true" />
           <input
             type="search"
             id="searchInput"
-            placeholder="Search courses, assignments..."
+            placeholder="Search"
             value={searchValue || ''}
             onChange={(e) => onSearch && onSearch(e.target.value)}
-            aria-label="Search dashboard"
+            aria-label="Search assignments"
           />
         </div>
 
         <div style={{ position: 'relative' }}>
           <button
             type="button"
-            className="icon-btn"
+            className="bell-btn"
             id="notifBtn"
-            aria-label="View notifications"
+            aria-label="Notifications"
             onClick={() => setShowNotifications(!showNotifications)}
           >
-            <Bell size={20} />
-            {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
+            <Bell size={18} aria-hidden="true" />
+            {unreadCount > 0 && <span className="bell-dot" aria-hidden="true" />}
           </button>
 
           {showNotifications && (
@@ -159,18 +159,18 @@ export default function Header({ onMenuClick, onSearch, searchValue }) {
         </div>
 
         <div
-          className="user-profile-btn"
+          className="topbar-avatar"
           onClick={() => navigate('/profile')}
           title="Go to profile"
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+          style={{ cursor: 'pointer' }}
         >
           <img
             src={avatarUrl}
             alt={fullName}
-            style={{ width: '36px', height: '36px', borderRadius: '50%', objectFit: 'cover' }}
+            className="avatar-circle"
           />
         </div>
       </div>
-    </header>
+    </div>
   );
 }
