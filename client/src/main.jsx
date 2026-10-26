@@ -4,6 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import './styles/design-system.css';
+import './styles/result-dashboard.css';
+import './styles/edtech-student.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
