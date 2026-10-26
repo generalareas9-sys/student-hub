@@ -70,6 +70,10 @@ export const api = {
   getDashboardStats: () => request('/dashboard/stats'),
   getStudyHours: (period = 'week') => request(`/dashboard/study-hours?period=${period}`),
   getPerformanceTrends: () => request('/dashboard/performance'),
+  getDashboardOverview: (params = {}) => {
+    const query = new URLSearchParams(params).toString();
+    return request(`/dashboard/overview${query ? `?${query}` : ''}`);
+  },
 
   // Courses
   getCourses: () => request('/courses'),
