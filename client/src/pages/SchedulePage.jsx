@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import AppShell from '../components/layout/AppShell';
 import { Calendar as CalendarIcon, Clock, MapPin, Plus, Trash2 } from 'lucide-react';
