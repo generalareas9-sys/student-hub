@@ -1,0 +1,588 @@
+/* ============================================================
+   EDTECH Innovate — Student Online Exam Portal Stylesheet
+   Matches: EdTech Innovate Online Exam Portal reference design
+   ============================================================ */
+
+.edtech-portal-root {
+  background: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1e293b;
+  display: flex;
+  flex-direction: column;
+}
+
+.edtech-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* 1. Light Sidebar */
+.edtech-sidebar {
+  background: #ffffff;
+  border-right: 1px solid #eef2f6;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.edtech-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  padding: 0 8px;
+}
+
+.edtech-brand-icon {
+  display: grid;
+  grid-template-columns: repeat(2, 10px);
+  gap: 3px;
+}
+
+.edtech-brand-icon span:nth-child(1) { background: #e11d48; width: 10px; height: 10px; border-radius: 2px; }
+.edtech-brand-icon span:nth-child(2) { background: #0284c7; width: 10px; height: 10px; border-radius: 2px; }
+.edtech-brand-icon span:nth-child(3) { background: #f59e0b; width: 10px; height: 10px; border-radius: 2px; }
+.edtech-brand-icon span:nth-child(4) { background: #10b981; width: 10px; height: 10px; border-radius: 2px; }
+
+.edtech-brand-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ea580c;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+}
+
+.edtech-brand-subtitle {
+  font-size: 10px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.edtech-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.edtech-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edtech-nav-item:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.edtech-nav-item.active {
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+.edtech-sidebar-footer-card {
+  margin-top: auto;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 12px;
+  text-align: center;
+}
+
+.edtech-sidebar-footer-card h5 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin: 8px 0 4px;
+}
+
+.edtech-sidebar-footer-card p {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 2. Top Header */
+.edtech-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.edtech-header-left h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0;
+}
+
+.edtech-header-left p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 2px 0 0;
+}
+
+.edtech-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.edtech-search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  padding: 8px 16px;
+  width: 240px;
+}
+
+.edtech-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  width: 100%;
+}
+
+.edtech-icon-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.edtech-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edtech-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 8px;
+}
+
+.edtech-user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2563eb;
+}
+
+/* 3. Main Content Grid */
+.edtech-main {
+  padding: 24px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Hero Banner */
+.edtech-hero-banner {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #172554 100%);
+  border-radius: 16px;
+  padding: 28px 32px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(29, 78, 216, 0.2);
+}
+
+.edtech-hero-text h2 {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0 0 8px;
+}
+
+.edtech-hero-text p {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0 0 20px;
+  max-width: 440px;
+}
+
+.edtech-hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease;
+}
+
+.edtech-hero-btn:hover {
+  transform: translateY(-2px);
+}
+
+.edtech-hero-widgets {
+  display: flex;
+  gap: 16px;
+}
+
+.edtech-floating-widget {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.edtech-floating-widget-title {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.edtech-floating-widget-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 2px 0;
+}
+
+.edtech-floating-widget-sub {
+  font-size: 11px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* 4 Quick Action Cards */
+.edtech-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.edtech-action-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.edtech-action-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.edtech-action-card h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.edtech-action-card p {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 14px;
+}
+
+.edtech-action-btn {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: opacity 0.15s ease;
+}
+
+.edtech-action-btn:hover {
+  opacity: 0.9;
+}
+
+/* Performance Overview Section */
+.edtech-perf-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.edtech-perf-header h3 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.edtech-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.edtech-stat-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.edtech-stat-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.edtech-stat-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+}
+
+.edtech-stat-lbl {
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.edtech-stat-sub {
+  font-size: 10px;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+/* Two-column dashboard body (Charts + Right Profile column) */
+.edtech-body-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.edtech-charts-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.edtech-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.edtech-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.edtech-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.edtech-card-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Right Column Widgets */
+.edtech-right-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.edtech-profile-card {
+  text-align: center;
+}
+
+.edtech-profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  border: 3px solid #2563eb;
+}
+
+.edtech-profile-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 2px;
+}
+
+.edtech-profile-roll {
+  font-size: 11px;
+  color: #64748b;
+  margin: 0 0 12px;
+}
+
+.edtech-progress-bar {
+  background: #f1f5f9;
+  border-radius: 6px;
+  height: 8px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.edtech-progress-fill {
+  background: #2563eb;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.edtech-upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.edtech-date-badge {
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 6px 8px;
+  text-align: center;
+  min-width: 44px;
+}
+
+.edtech-date-day {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.edtech-date-month {
+  font-size: 9px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.edtech-badge-live {
+  background: #dcfce7;
+  color: #16a34a;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.edtech-badge-upcoming {
+  background: #fef3c7;
+  color: #d97706;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 4. Bottom Footer Banner */
+.edtech-footer {
+  background: #0b1a4a;
+  color: #94a3b8;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.edtech-footer a {
+  color: #cbd5e1;
+  text-decoration: none;
+}
+
+.edtech-footer-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
