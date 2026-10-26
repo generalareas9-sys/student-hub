@@ -123,3 +123,117 @@ export async function getPerformanceTrends(req, res, next) {
     next(error);
   }
 }
+
+export async function getDashboardOverview(req, res, next) {
+  try {
+    const year = req.query.year || '2024/2025';
+    const term = req.query.term || '2nd Term';
+
+    const overviewData = {
+      year,
+      term,
+      statCards: {
+        totalStudents: { value: '1,250', trend: '↑ 8.5% vs Last Term', isUp: true },
+        studentsPassed: { value: '1,078', sub: '86.2% Pass Rate' },
+        distinctions: { value: '312', sub: '25.0% of Total' },
+        averageScore: { value: '76.4%', trend: '▲ 4.7% vs Last Term', isUp: true },
+        failRate: { value: '13.8%', trend: '▼ 4.7% vs Last Term', isUp: false },
+      },
+      resultSummary: {
+        total: '1,250',
+        slices: [
+          { name: 'Distinction (80-100)', count: 312, percent: 25.0, color: '#7c3aed' },
+          { name: 'Credit (60-79)', count: 445, percent: 35.6, color: '#22c55e' },
+          { name: 'Pass (50-59)', count: 228, percent: 18.2, color: '#3b82f6' },
+          { name: 'Average (40-49)', count: 155, percent: 12.4, color: '#f97316' },
+          { name: 'Fail (0-39)', count: 110, percent: 8.8, color: '#ef4444' },
+        ],
+      },
+      subjectAverages: [
+        { subject: 'Mathematics', score: 82, color: '#3b82f6' },
+        { subject: 'English', score: 76, color: '#22c55e' },
+        { subject: 'Science', score: 72, color: '#7c3aed' },
+        { subject: 'Social Studies', score: 69, color: '#f97316' },
+        { subject: 'Computer Studies', score: 65, color: '#14b8a6' },
+      ],
+      topStudents: [
+        { rank: 1, name: 'Aisha Muhammad', score: '95.6%', badgeColor: '#f59e0b' },
+        { rank: 2, name: 'Ibrahim Yakubu', score: '92.4%', badgeColor: '#94a3b8' },
+        { rank: 3, name: 'Fatima Ahmed', score: '91.1%', badgeColor: '#d97706' },
+        { rank: 4, name: 'Daniel Oladipo', score: '89.7%', badgeColor: '#e2e8f0' },
+        { rank: 5, name: 'Zainab Usman', score: '88.9%', badgeColor: '#e2e8f0' },
+      ],
+      classOverview: [
+        {
+          className: 'SS 1',
+          totalStudents: 250,
+          averageScore: '78.6%',
+          passRate: '88.5%',
+          distinctions: '68 (27.2%)',
+          failRate: '11.5%',
+          trend: [65, 70, 68, 75, 78, 88.5],
+          trendColor: '#22c55e',
+        },
+        {
+          className: 'SS 2',
+          totalStudents: 240,
+          averageScore: '76.1%',
+          passRate: '86.7%',
+          distinctions: '60 (25.0%)',
+          failRate: '13.3%',
+          trend: [66, 68, 72, 70, 78, 86.7],
+          trendColor: '#22c55e',
+        },
+        {
+          className: 'SS 3',
+          totalStudents: 230,
+          averageScore: '74.2%',
+          passRate: '84.1%',
+          distinctions: '50 (21.7%)',
+          failRate: '15.9%',
+          trend: [82, 80, 78, 76, 75, 84.1],
+          trendColor: '#ef4444',
+        },
+        {
+          className: 'SS 4',
+          totalStudents: 270,
+          averageScore: '75.8%',
+          passRate: '85.6%',
+          distinctions: '64 (23.7%)',
+          failRate: '14.4%',
+          trend: [68, 71, 74, 78, 80, 85.6],
+          trendColor: '#22c55e',
+        },
+        {
+          className: 'SS 5',
+          totalStudents: 260,
+          averageScore: '77.3%',
+          passRate: '86.1%',
+          distinctions: '70 (26.9%)',
+          failRate: '13.9%',
+          trend: [70, 72, 75, 78, 82, 86.1],
+          trendColor: '#22c55e',
+        },
+      ],
+      passRateByClass: {
+        overallPassRate: '86.2%',
+        classes: [
+          { name: 'SS 1', rate: 88.5, color: '#3b82f6' },
+          { name: 'SS 2', rate: 86.7, color: '#22c55e' },
+          { name: 'SS 3', rate: 84.1, color: '#7c3aed' },
+          { name: 'SS 4', rate: 85.6, color: '#f97316' },
+          { name: 'SS 5', rate: 86.1, color: '#14b8a6' },
+        ],
+      },
+      metadata: {
+        updatedAt: 'May 27, 2025',
+        source: 'School Academic System',
+      },
+    };
+
+    res.json({ success: true, data: overviewData });
+  } catch (error) {
+    next(error);
+  }
+}
+
