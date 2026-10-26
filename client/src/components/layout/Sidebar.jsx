@@ -2,13 +2,12 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
   LayoutGrid,
-  BookOpen,
-  MessageSquare,
-  Award,
+  Briefcase,
+  MessageCircle,
+  BarChart3,
   Calendar,
   Settings,
   LogOut,
-  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -23,9 +22,9 @@ export default function Sidebar({ isOpen, onClose }) {
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutGrid },
-    { name: 'Courses', path: '/courses', icon: BookOpen },
-    { name: 'Chat', path: '/chat', icon: MessageSquare },
-    { name: 'Grades', path: '/grades', icon: Award },
+    { name: 'Courses', path: '/courses', icon: Briefcase },
+    { name: 'Chat', path: '/chat', icon: MessageCircle },
+    { name: 'Grades', path: '/grades', icon: BarChart3 },
     { name: 'Schedule', path: '/schedule', icon: Calendar },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];
@@ -38,14 +37,17 @@ export default function Sidebar({ isOpen, onClose }) {
         aria-hidden="true"
       />
       <aside className={`sidebar ${isOpen ? 'open' : ''}`} id="sidebar" aria-label="Main navigation">
-        <div className="brand">
-          <div className="brand-logo" aria-hidden="true">
-            <LayoutGrid size={20} color="#ffffff" />
+        {/* Logo: two overlapping rounded squares (purple + lavender) before bold 18px StudentHub */}
+        <div className="sidebar-logo">
+          <div className="logo-icon" aria-hidden="true">
+            <span className="logo-sq logo-sq--back" />
+            <span className="logo-sq logo-sq--front" />
           </div>
-          <span className="brand-name">StudentHub</span>
+          <span className="logo-text">StudentHub</span>
         </div>
 
-        <nav className="nav-menu">
+        {/* Navigation */}
+        <nav className="sidebar-nav" aria-label="Dashboard navigation">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
@@ -55,7 +57,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
                 onClick={onClose}
               >
-                <Icon size={18} className="nav-icon" />
+                <Icon size={18} aria-hidden="true" />
                 <span>{item.name}</span>
               </NavLink>
             );
@@ -64,17 +66,15 @@ export default function Sidebar({ isOpen, onClose }) {
 
         {/* Premium Upgrade Promotion Card */}
         <div className="premium-card">
-          <div className="premium-icon" aria-hidden="true">
-            <Sparkles size={18} color="#5048e5" />
-          </div>
-          <h4 className="premium-title">Upgrade to Pro</h4>
-          <p className="premium-text">Get unlimited AI tutoring and priority course enrollment.</p>
+          <h4 className="premium-title">Get Premium</h4>
+          <p className="premium-desc">Buy premium and get access to new courses</p>
           <button
             type="button"
             className="premium-btn"
+            id="btnSubscribe"
             onClick={() => alert('StudentHub Pro subscription will launch soon!')}
           >
-            Upgrade Plan
+            Subscribe
           </button>
         </div>
 
@@ -82,10 +82,10 @@ export default function Sidebar({ isOpen, onClose }) {
           <button
             type="button"
             className="nav-item"
-            style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'left' }}
+            style={{ width: '100%', border: 'none', background: 'transparent', textAlign: 'left', cursor: 'pointer' }}
             onClick={handleLogout}
           >
-            <LogOut size={18} className="nav-icon" />
+            <LogOut size={18} aria-hidden="true" />
             <span>Log Out</span>
           </button>
         </div>
